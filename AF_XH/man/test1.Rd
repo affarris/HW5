@@ -20,7 +20,4 @@ We should delete this eventually.
 }
 \examples{
 test1()
-
-## The function is currently defined as
-function(){"This is a test."}
 }
