@@ -1,0 +1,9 @@
+Package: AF_XH
+Type: Package
+Title: Assignment 5
+Version: 0.0-0
+Date: 2011-02-26
+Author: Andrew Farris, Xinyu Hu
+Description: This package contains an implementation of an analysis of some email data.
+License: GPL (>=2)
+LazyLoad: yes
