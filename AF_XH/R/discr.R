@@ -42,7 +42,7 @@ discr <- function(linz,
         else NULL
         }
     
-    blanks <- c(0, blanks)
+    if (blanks[1] != 1) blanks <- c(1, blanks)
     numBlks <- length(blanks)
     
     res <- sapply(as.data.frame(rbind(blanks[ 2:numBlks ], 
