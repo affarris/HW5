@@ -36,9 +36,9 @@ discr <- function(linz,
     yeZ <-  grepl(headZ, linz) 
     
     headSeekr <- function(u, yeZ, numHds, sensitivity){
-        Yz <- yeZ[ u[2]:u[1] ]
+        Yz <- yeZ[ u[2]:(u[1]-1) ]   ## We don't need to check the line which we already know is ""
         scr <- sum(Yz)
-        if (scr / numHds >= sensitivity) ( min( which(Yz) ) + u[2] - 1):( u[1] )
+        if (scr / numHds >= sensitivity) ( min( which(Yz) ) + u[2] - 1):( u[1]-1 )
         else NULL
         }
     
