@@ -38,7 +38,9 @@ discr <- function(linz,
     headSeekr <- function(u, yeZ, numHds, sensitivity){
         Yz <- yeZ[ u[2]:(u[1]-1) ]   ## We don't need to check the line which we already know is ""
         scr <- sum(Yz)
-        if (scr / numHds >= sensitivity) ( min( which(Yz) ) + u[2] - 1):( u[1]-1 )
+                    # this way, it won't be too greedy, and take too much for header:
+        strth <- ceiling(sensitivity * numHds) 
+        if (scr >= strth ) ( rev( which(Yz))[strth]  ):( u[1]-1 )
         else NULL
         }
     
