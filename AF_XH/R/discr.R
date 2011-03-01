@@ -25,8 +25,8 @@
 # note: may break if sensitivity = 0!
 
 discr <- function(linz, 
-        heads = c("Date:","From:","To:","Subject:"),
-        sensitivity = 0.75 ){
+        heads = c("Date:","From:","Subject:","Mime-Version:"),
+        sensitivity = 1 ){
     blanks <- which(linz == "")
     headZ <- sapply(heads, function(w){ paste("(","^",w,")", sep = "") })
     headZ <- paste(headZ, collapse = "|")
@@ -36,9 +36,9 @@ discr <- function(linz,
     yeZ <-  grepl(headZ, linz) 
     
     headSeekr <- function(u, yeZ, numHds, sensitivity){
-        Yz <- yeZ[ u[2]:u[1] ]
+        Yz <- yeZ[ u[2]:(u[1]-1) ]   ## We don't need to check the line which we already know is ""
         scr <- sum(Yz)
-        if (scr / numHds >= sensitivity) ( min( which(Yz) ) + u[2] - 1):( u[1] )
+        if (scr / numHds >= sensitivity) ( min( which(Yz) ) + u[2] - 1):( u[1]-1 )
         else NULL
         }
     
