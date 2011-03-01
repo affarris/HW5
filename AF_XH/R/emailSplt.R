@@ -11,5 +11,5 @@ emailSplt <- function(linz, headers, bodies){
                 }, linz = linz, 
                 headers = headers,
                 bodies = bodies)
-   
+    return(emails) # <--- function's output
     }
