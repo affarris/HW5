@@ -25,8 +25,8 @@
 # note: may break if sensitivity = 0!
 
 discr <- function(linz, 
-        heads = c("Date:","From:","To:","Subject:"),
-        sensitivity = 0.75 ){
+        heads = c("Date:","From:","Subject:","Mime-Version:"),
+        sensitivity = 1 ){
     blanks <- which(linz == "")
     headZ <- sapply(heads, function(w){ paste("(","^",w,")", sep = "") })
     headZ <- paste(headZ, collapse = "|")
