@@ -40,8 +40,8 @@ discr <- function(linz,
         scr <- sum(Yz)
                     # this way, it won't be too greedy, and take too much for header:
         strth <- ceiling(sensitivity * numHds) 
-        if (scr >= strth ) ( rev( which(Yz))[strth]  ):( u[1]-1 )
-        else NULL
+        if (scr >= strth ) return (( u[2] + which(Yz)[scr - strth + 1] - 1  ):( u[1]-1 ) )
+        else return(NULL)
         }
     
     if (blanks[1] != 1) blanks <- c(1, blanks)
