@@ -1,0 +1,22 @@
+## create a whole list of the list of each file 
+
+
+heads = c("Date:","From:","From ", "To:", "Message-ID:", "Subject:")
+
+
+filenames=list.files()
+numFile=length(filenames)
+wholelist= rep(list(list()), numFile) 
+
+for (i in 1: numFile)
+  {   file=filenames[i]      
+      con = file(file, "r")
+      txt=readLines(con)
+      close(con)
+      unlink(file)
+
+      headers=discr(txt, heads)
+      bodies=bodySplt(txt, headers)
+      emails=emailSplt(txt, headers, bodies)
+      wholelist[[i]]=emails     
+                                } 
