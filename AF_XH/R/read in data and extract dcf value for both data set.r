@@ -1,6 +1,7 @@
 #read in eronmail
 con = gzfile("enron_mail_030204.tar.gz" )
 txteron = readLines(con)
+close(con)
 txtsub = txteron[2:204]
 
 # read in rhelpe data set
@@ -9,10 +10,11 @@ datareadin = function (filename){
    t = length(filestring)
      txtrhelp = sapply(filestring, function(x){
                    con = file(x)
-                   readLines(con)})
+                   readLines(con)
+                   close(con)})
+
       return(txtrhelp)             
  }
-
 
 
 # the header start with the common title, such as Date:, From: and end up with white space
@@ -35,7 +37,7 @@ subsetfun = function (txt, pattern){
 txtspliteron =  subsetfun(txteron, "^Date\\:")
 headereron =  txtspliteron[[1]]
  
-txtsplitrhelp =  lapply(txtrhelp, function(x) subsetfun(x,"^From\\:"))
+txtsplitrhelp =  lapply(txtrhelp, function(x) subsetfun(x,"^From"))
 headerrhelp = sapply(txtsplitrhelp, function(x) x = x[[1]])
 
 
