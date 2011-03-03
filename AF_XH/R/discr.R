@@ -24,9 +24,13 @@
 
 # note: may break if sensitivity = 0!
 
+# Note that the new argument/default for this function makes uses of
+# it in its older form still valid.
+
 discr <- function(linz, 
         heads = c("Date:","From:","Subject:","Mime-Version:"),
-        sensitivity = 1 ){
+        sensitivity = 1, order = FALSE ){
+    if (!order){
     blanks <- which(linz == "")
     headZ <- sapply(heads, function(w){ paste("(","^",w,")", sep = "") })
     headZ <- paste(headZ, collapse = "|")
@@ -59,6 +63,38 @@ discr <- function(linz,
     #        ))    
 
     res[!sapply(res,is.null)]
+    }
+
+    else{ # (if order matters!):
+
+    numHds <- length(heads)
+    headZ <- sapply(heads, function(w){ paste("^",w, sep = "") })
+    hdsLocs <- sapply(headZ, function(z, linz = linz){grepl(z, linz )}, linz = linz)
+    
+    # this will give us a matrix of whether each field is found in each line
+    hdsLocs <- cbind(hdsLocs, linz == "" )
+    rets <- apply(hdsLocs,1,any)
+    # this stores for us which lines have matches on them (might be faster to do this first?))
+
+    witch <- apply(hdsLocs[rets,],1,which)
+    # this tells is which field is on each line
+
+    diffrs <- as.character( c(0, diff(witch) ) )
+    diffrs[ (hdsLocs[,1])[rets] ] <- "s" # we need to `anchor' our headers
+    k <- paste( "s1{",numHds,"}", sep = "", collapse = "" )
+    hedsTemp <- gregexpr(k, paste( diffrs , collapse = "" ) )[[1]] 
+    # this tells us which of the candidate lines begin the headers.
+
+    wrets <- which(rets) 
+
+    # we still have to convert to origional indices:
+    heds <- lapply(hedsTemp, function(h, wrets = wrets, numHds = numHds){
+        L1 <- wrets[h]
+        L2 <- wrets[h + numHds] - 1
+        return(L1:L2)
+        }, wrets = wrets, numHds = numHds)
+    return(heds)
+    }
 }
 
 
