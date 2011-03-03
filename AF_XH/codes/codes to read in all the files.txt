@@ -15,8 +15,30 @@ for (i in 1: numFile)
       close(con)
     
 
-      headers=discr(txt, heads)
+      headers=discr(txt, heads,0.75)
       bodies=bodySplt(txt, headers)
       emails=emailSplt(txt, headers, bodies)
-      wholelist[[i]]=emails     
-                                } 
+      
+      year=gsub(".*([0-9]{4}).*", "\\1", file)
+      month=gsub(".*([A-Z][a-z]{1,8}).*", "\\1", file)
+      wholelist[[i]]=list(year=year,month=month, emails=emails)     
+      
+                               
+  } 
+
+
+
+#### obtain years, month and number of emails for each file #####
+
+years=c()
+yr=numeric(numFile)
+mon=character(numFile)
+numEmail=numeric(numFile)
+for (i in 1:numFile){
+           yr[i]=wholelist[[i]][[1]] 
+           mon[i]=wholelist[[i]][[2]]
+           numEmail[i]=length(wholelist[[i]][[3]])
+           if (!yr[i] %in% years) (years=c(years,yr[i]))
+}
+
+numYear=length(years)
