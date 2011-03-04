@@ -48,29 +48,45 @@ aggregate(numEmail, by=list(yr), sum)
 wholelist[[80]][[3]][[118]]$body=wholelist[[80]][[3]][[118]]$body[-11]
 wholelist[[80]][[3]][[118]]$header=wholelist[[80]][[3]][[118]]$header[-8]
 
+b=unlist(wholelist[[104]][[3]][[1341]])
+a=unlist(wholelist[[104]][[3]][[1340]]$body)
+wholelist[[104]][[3]][[1340]]$body=rbind(as.matrix(a), as.matrix(b))
+for (i in 1341:1810){
+    wholelist[[104]][[3]][[i]]=wholelist[[104]][[3]][[i+1]]
 
-for (i in 1: length(c)){
-  row=grep("^From:", email$header)
-  txt2=email[row]
-   name= gsub(".*\\((.*)\\)$", "\\1", txt2)
+}
+wholelist[[104]][[3]][[1181]]=NULL
+
+######
+
+
+   
 
 #####
 hdlist=rep(list(list()),numFile)
+
 for (i in 1: numFile){
       
         hdm=matrix(0,numEmail[i])
         for (j in 1:numEmail[i]){
-                    
+                  
                 tt=wholelist[[i]][[3]][[j]]$header
+                 r= grep("^From:", tt)
+                tt=tt[r]                
                 hdm[j]=extvalfun(tt,"From")    
-                                             
- }
-      hdlist[[i]]=hdm
- }
+                                    
+                                }              
+        hdlist[[i]]=hdm
+                      }
 
 
- mat=matrix(0, 1571)
- for (i in 1 :1571){
-    
-   mat[i]= wholelist[[80]][[3]][[i]]$header[2]
-}
+names=hdlist
+for (i in 1:numFile){
+       for (j in 1: numEmail[i]){
+           tt=names[[i]][j]
+           names[[i]][j]= gsub(".*\\((.*)\\)$", "\\1",tt )     
+                                }
+                    }
+
+ 
+ 
