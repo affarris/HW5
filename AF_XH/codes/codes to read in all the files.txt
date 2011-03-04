@@ -22,8 +22,7 @@ for (i in 1: numFile)
       year=gsub(".*([0-9]{4}).*", "\\1", file)
       month=gsub(".*([A-Z][a-z]{1,8}).*", "\\1", file)
       wholelist[[i]]=list(year=year,month=month, emails=emails)     
-      
-                               
+                                    
   } 
 
 
@@ -42,3 +41,36 @@ for (i in 1:numFile){
 }
 
 numYear=length(years)
+
+aggregate(numEmail, by=list(yr), sum)
+
+#### 
+wholelist[[80]][[3]][[118]]$body=wholelist[[80]][[3]][[118]]$body[-11]
+wholelist[[80]][[3]][[118]]$header=wholelist[[80]][[3]][[118]]$header[-8]
+
+
+for (i in 1: length(c)){
+  row=grep("^From:", email$header)
+  txt2=email[row]
+   name= gsub(".*\\((.*)\\)$", "\\1", txt2)
+
+#####
+hdlist=rep(list(list()),numFile)
+for (i in 1: numFile){
+      
+        hdm=matrix(0,numEmail[i])
+        for (j in 1:numEmail[i]){
+                    
+                tt=wholelist[[i]][[3]][[j]]$header
+                hdm[j]=extvalfun(tt,"From")    
+                                             
+ }
+      hdlist[[i]]=hdm
+ }
+
+
+ mat=matrix(0, 1571)
+ for (i in 1 :1571){
+    
+   mat[i]= wholelist[[80]][[3]][[i]]$header[2]
+}
