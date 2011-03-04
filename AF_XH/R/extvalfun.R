@@ -2,7 +2,7 @@
 ##e.g.,  extvalfun(header,"From") to extract the content after "From:" 
 
 extvalfun = function(header, tag){
-          con = textConnection(txt)
+          con = textConnection(header)
           valuematrix = read.dcf(con)
           close(con)
           value = valuematrix[,tag]
