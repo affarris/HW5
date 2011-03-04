@@ -25,7 +25,20 @@ for (i in 1: numFile)
                                     
   } 
 
+##### Split up the wholelist to get a header list and a body list #####
+   Split=function(x,n){
+        templist=rep(list(list()),length(x))
+        for (i in 1: length(x)){
+              templist[[i]]= sapply(x[[i]]$emails, function(a,element){a[[n]]})    
+                              } 
+             return(templist)
+                            }
+  header.R= Split(wholelist, 1) # obtain a list of all the headers
 
+  body.R= Split(wholelist, 2)   # obtain a list of all the bodies
+
+
+#####
 
 #### obtain years, month and number of emails for each file #####
 
@@ -44,18 +57,6 @@ numYear=length(years)
 
 numEmYr=aggregate(numEmail, by=list(yr), sum)
 
-#### 
-wholelist[[80]][[3]][[118]]$body=wholelist[[80]][[3]][[118]]$body[-11]
-wholelist[[80]][[3]][[118]]$header=wholelist[[80]][[3]][[118]]$header[-8]
-
-b=unlist(wholelist[[104]][[3]][[1341]])
-a=unlist(wholelist[[104]][[3]][[1340]]$body)
-wholelist[[104]][[3]][[1340]]$body=rbind(as.matrix(a), as.matrix(b))
-for (i in 1341:1810){
-    wholelist[[104]][[3]][[i]]=wholelist[[104]][[3]][[i+1]]
-
-}
-wholelist[[104]][[3]][[1181]]=NULL
 
 ######
 
@@ -63,40 +64,26 @@ wholelist[[104]][[3]][[1181]]=NULL
    
 
 ##### 
-greHD=function(char){
-   hdlist=rep(list(list()),numFile)
-
-   for (i in 1: numFile){
-      
-        hdm=matrix(0,numEmail[i])
-        for (j in 1:numEmail[i]){
-                  
-                tt=wholelist[[i]][[3]][[j]]$header
-                r= grep(paste("^",char,":",sep=""), tt)
-                tt=tt[r]                
-                hdm[j]=extvalfun(tt,char)    
-                                    
-                                }              
-        hdlist[[i]]=hdm
-                      }
-    return(hdlist)
- }
-
-##### Extract Names of People Involved #####
- namesLT=greHD("From")
-
- extpat=function(list, reexp, el="\\1"){
-    for (i in 1:numFile){
-        for (j in 1: numEmail[i]){
-            tt=list[[i]][j]
-            list[[i]][j]= gsub(reexp,el,tt ) 
+extpat=function(hdlist, reexp, el="\\1"){
+    for (i in 1:length(hdlist)){
+        for (j in 1: length(hdlist[[i]])){
+            tt=hdlist[[i]][j]
+            hdlist[[i]][j]= gsub(reexp,el,tt ) 
                                 }
                     } 
-     return(list)
+     return(hdlist)
       }
 
+
+
+
+
+##### Extract Names of People Involved #####
+ 
+ From.v =sapply(Fromvalue, function(x) as.matrix(Fromvalue) 
+
  reexp=".*\\((.*)\\)$"
- names=extpat(namesLT, reexp)
+ names=extpat(From.v, reexp)
 
 ## the following code tries to obtain number of people involved for each year (pepYr)
 
@@ -116,13 +103,24 @@ greHD=function(char){
 
 #########  Dates ########
 #########################
-
  
- datesLT=greHD("Date")
+ Dates.v=greHD("Date")
  reexp1= "(.*),.*"
  dates=extpat(datesLT, reexp1)
 
- gsub("(.*)([-+][0-9]{4})(.*)","\\2",tt)
+ a=unlist(dates)
+ table(a)
+ wkt=c(table(a)[2:7],table(a)[9])
+ levels=c("Mon","Tue","Wed", "Thu","Fri","Sat", "Sun") 
+ wkt=wkt[levels]
+ barplot(wkt, xlab="Dates", ylab="Num of Emails", main="Cumulative Number of Emails by Dates")
+
+#### Time Zones Effect ######
+
+ reexp2="(.*)([-+][0-9]{4})(.*)"
+ tz=extpat(datesLT, reexp2, "\\2")
+ tzt=table(unlist(tz))
+ dim(tzt)
 
 
 
