@@ -42,7 +42,7 @@ for (i in 1:numFile){
 
 numYear=length(years)
 
-aggregate(numEmail, by=list(yr), sum)
+numEmYr=aggregate(numEmail, by=list(yr), sum)
 
 #### 
 wholelist[[80]][[3]][[118]]$body=wholelist[[80]][[3]][[118]]$body[-11]
@@ -63,30 +63,74 @@ wholelist[[104]][[3]][[1181]]=NULL
    
 
 #####
-hdlist=rep(list(list()),numFile)
+greHD=function(char){
+   hdlist=rep(list(list()),numFile)
 
-for (i in 1: numFile){
+   for (i in 1: numFile){
       
         hdm=matrix(0,numEmail[i])
         for (j in 1:numEmail[i]){
                   
                 tt=wholelist[[i]][[3]][[j]]$header
-                 r= grep("^From:", tt)
+                r= grep(paste("^",char,":",sep=""), tt)
                 tt=tt[r]                
-                hdm[j]=extvalfun(tt,"From")    
+                hdm[j]=extvalfun(tt,char)    
                                     
                                 }              
         hdlist[[i]]=hdm
                       }
+    return(hdlist)
+ }
 
+##### Extract Names of People Involved #####
+ namesLT=greHD("From")
 
-names=hdlist
-for (i in 1:numFile){
-       for (j in 1: numEmail[i]){
-           tt=names[[i]][j]
-           names[[i]][j]= gsub(".*\\((.*)\\)$", "\\1",tt )     
+ extpat=function(list, reexp, el="\\1"){
+    for (i in 1:numFile){
+        for (j in 1: numEmail[i]){
+            tt=list[[i]][j]
+            if (grepl(reexp, tt)==TRUE) (list[[i]][j]= gsub(reexp,el,tt ) )
+               else (list[[i]][j]="" )   
                                 }
-                    }
+                    } 
+      }
+ reexp=".*\\((.*)\\)$"
+ names=extpat(namesLT, reexp)
+
+## the following code tries to obtain number of people involved for each year (pepYr)
+
+ nameYr=rep(list(list()),numYear)
+ nn=table(yr)
+ nameYr[[1]]=unlist(names[1:nn[1]])
+
+ for (i in 2:numYear){
+      nameYr[[i]]= unlist(names[(cumsum(nn[1:i])[i-1]+1):(cumsum(nn[1:i])[i])])
+                     }
+ 
+ pepYr=unlist(lapply(nameYr, function(x){dim(table(x))}))
+ names(pepYr)<-years
+
+## plot the trend of number of people involved over time
+ barplot(pepYr[2:14],xlab="Years", ylab="Number of People Involved", main="Number of People Involved Over Time")
+
+#########  Dates ########
+#########################
 
  
- 
+ datesLT=greHD("Date")
+ reexp1= "(.*),.*"
+ dates=extpat(datesLT, reexp1)
+
+ gsub("(.*)([-+][0-9]{4})(.*)","\\2",tt)
+
+extpat=function(list, reexp, el="\\1"){
+    for (i in 1:numFile){
+        for (j in 1: numEmail[i]){
+            tt=list[[i]][j]
+            list[[i]][j]= gsub(reexp,el,tt ) 
+                                }
+                    } 
+      }
+
+######### Subjects ######
+ subjects=greHD("Subject")
