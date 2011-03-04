@@ -19,3 +19,8 @@ greHD=function(char){
                       }
       return(hdlist)
  }
+
+
+emaillist = lapply (1: length(wholelist), function(i) wholelist[[i]][[3]])
+headerrhelp = lapply(emaillist, function(x) sapply(x, function(y) y$header))
+bodyrhelp =  lapply(emaillist, function(x) sapply(x, function(y) y$body))

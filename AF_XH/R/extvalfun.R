@@ -1,11 +1,9 @@
 ### extracting the content after a header of one email
-##e.g.,  extvalfun(header,"From") to extract the content after "From:" 
+##e.g.,  extvalfun(header) to extract the content after Tag
 
-extvalfun = function(header, tag){
-          con = textConnection(header)
+extvalfun = function(txt){
+          con = textConnection(txt)
           valuematrix = read.dcf(con)
           close(con)
-          value = valuematrix[,tag]
-          return(value)
-      }
-  
+          return(valuematrix)
+}

@@ -1,7 +1,6 @@
 #read in eronmail
 con = gzfile("enron_mail_030204.tar.gz" )
 txteron = readLines(con)
-close(con)
 txtsub = txteron[2:204]
 
 # read in rhelpe data set
@@ -10,11 +9,10 @@ datareadin = function (filename){
    t = length(filestring)
      txtrhelp = sapply(filestring, function(x){
                    con = file(x)
-                   readLines(con)
-                   close(con)})
-
+                   readLines(con)})
       return(txtrhelp)             
  }
+
 
 
 # the header start with the common title, such as Date:, From: and end up with white space
@@ -33,39 +31,51 @@ subsetfun = function (txt, pattern){
     return(list(subsetheader,subsetbody))
 }
 
-#split the header and body for enron & rhelp email, and save each header and body of each email into a list
+#split the header and body for enron email, and save each header and body of each email into a list
 txtspliteron =  subsetfun(txteron, "^Date\\:")
 headereron =  txtspliteron[[1]]
  
-txtsplitrhelp =  lapply(txtrhelp, function(x) subsetfun(x,"^From"))
+txtsplitrhelp =  lapply(txtrhelp, function(x) subsetfun(x,"(^From) (.*) ([0-9]{4}$)"))
 headerrhelp = sapply(txtsplitrhelp, function(x) x = x[[1]])
-
+bodyrhelp = sapply(txtsplitrhelp, function(x) x = x[[2]])
 
 ######################################
 ####extract value from the dcf format################
-extvalfun = function(txt, tag){
+extvalfun = function(txt){
           con = textConnection(txt)
           valuematrix = read.dcf(con)
           close(con)
-          value = valuematrix[,tag]
-          return(value)
+          return(valuematrix)
 }
 
 
 #########extract value of from, to, and so on#############
-
-eronextract = function(txt, tag){
-          valueeron =  sapply(txt, function(x) extvalfun(x,tag))
+tagvalue =sapply(headerrhelp, function(x) sapply(x, function(y) extvalfun(y)))
+rhelpextract = function(list, tag){
+         value = sapply(list, function(x) as.matrix(unlist(sapply(x, function(y) y = y[,tag]))))
+         return(value)
 }
+ 
 
-rhelpextran = function(txt, tag){
-          valuerhelp = sapply(txt, function(x) unlist(sapply(x, function(y) extvalfun(y, "From"))))
-}
+######tesr 
 
-######tesr for to
-tovalue = eronextract(headereron, "To")
+Fromvalue2 = rhelpextract(tagvalue, c("From"))
+Datevalue = rhelpextract(tagvalue, "Date")
+Subjectvalue = rhelpextract(tagvalue, "Subject")
+Replyvalue =  rhelpextract(tagvalue, "In-Reply-To")
+####Fomat convertion########
+
 
 
  
 
- 
+################################################################### 
+rhelpextract = function(list, tag = c("From", "IN-Reply-To")){
+      
+      for (i in 1: length(tag)){
+      matrix_1 = matrix(0, length(x), length(tag))
+         value = sapply(list, function(x){ 
+                         matrix_1[,i] = unlist(sapply(x, function(y) y = y[,tag[i]])))
+         }            
+     return(value)
+}
