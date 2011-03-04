@@ -82,6 +82,7 @@ discr <- function(linz,
     diffrs <- as.character( c(0, diff(witch) ) )
     diffrs[ (hdsLocs[,1])[rets] ] <- "s" # we need to `anchor' our headers
     k <- paste( "s1{",numHds,"}", sep = "", collapse = "" )
+    diffrs <- gsub("-[1:9]", "N", diffrs ) # negative sign will mess up indices!
     hedsTemp <- gregexpr(k, paste( diffrs , collapse = "" ) )[[1]] 
     # this tells us which of the candidate lines begin the headers.
 
