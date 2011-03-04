@@ -62,7 +62,7 @@ wholelist[[104]][[3]][[1181]]=NULL
 
    
 
-#####
+##### 
 greHD=function(char){
    hdlist=rep(list(list()),numFile)
 
@@ -89,11 +89,12 @@ greHD=function(char){
     for (i in 1:numFile){
         for (j in 1: numEmail[i]){
             tt=list[[i]][j]
-            if (grepl(reexp, tt)==TRUE) (list[[i]][j]= gsub(reexp,el,tt ) )
-               else (list[[i]][j]="" )   
+            list[[i]][j]= gsub(reexp,el,tt ) 
                                 }
                     } 
+     return(list)
       }
+
  reexp=".*\\((.*)\\)$"
  names=extpat(namesLT, reexp)
 
@@ -123,14 +124,7 @@ greHD=function(char){
 
  gsub("(.*)([-+][0-9]{4})(.*)","\\2",tt)
 
-extpat=function(list, reexp, el="\\1"){
-    for (i in 1:numFile){
-        for (j in 1: numEmail[i]){
-            tt=list[[i]][j]
-            list[[i]][j]= gsub(reexp,el,tt ) 
-                                }
-                    } 
-      }
+
 
 ######### Subjects ######
  subjects=greHD("Subject")
