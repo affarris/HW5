@@ -11,9 +11,9 @@ subHeaders <- function(emailHeader, fields, is.dcf) {
            fields2 <- paste(fields, collapse = "|")
 
             rInd = grep(fields2,  emailHeader)
-               tt= gsub(".*\\:[= ](.*)$","\\1", hd[rInd])
+               tt= gsub(".*\\:[= ](.*)$","\\1", emailHeader[rInd])
             names(tt)=fields
-            return( as.list( head[ 1, fields ] ) )
+            return( as.list( tt ) )
     }
     }, fields = fields)
 
