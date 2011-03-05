@@ -53,14 +53,14 @@ extvalfun = function(txt){
 #########extract value of from, to, and so on#############
 tagvalue =sapply(headerrhelp, function(x) sapply(x, function(y) extvalfun(y)))
 rhelpextract = function(list, tag){
-         value = sapply(list, function(x) as.matix(unlist(sapply(x, function(y) y = y[,tag]))))
+         value = lapply(list, function(x) as.matrix(unlist(lapply(x, function(y) y = y[,tag]))))
          return(value)
 }
  
 
 ######tesr 
 
-From.v = rhelpextract(tagvalue, "From")
+From.v1 = rhelpextract(tagvalue, "From")
 Date.v = rhelpextract(tagvalue, "Date")
 Subject.v = rhelpextract(tagvalue, "Subject")
 
@@ -78,19 +78,11 @@ Subject.v = rhelpextract(tagvalue, "Subject")
             }
         return (aa)
    }
-Group.reply = sapply(tagvalue, function(x) Replysplit(x, "reply", "reply", "In-Reply-To"))
-Group.ask =  sapply(tagvalue, function(x) Replysplit(x, "ask", "reply", "In-Reply-To"))
-tag.reply = sapply(Group.reply, function(x) sapply(x, function(y) extvalfun(y)))
-tag.ask = sapply(Group.ask, function(x) sapply(x, function(y) extvalfun(y)))
-Reply.v.reply =  rhelpextract(tag.reply, "From")
-Reply.v.ask =  rhelpextract(tag.ask, "From")
-################################################################### 
-rhelpextract = function(list, tag = c("From", "IN-Reply-To")){
-      
-      for (i in 1: length(tag)){
-      matrix_1 = matrix(0, length(x), length(tag))
-         value = sapply(list, function(x){ 
-                         matrix_1[,i] = unlist(sapply(x, function(y) y = y[,tag[i]])))
-         }            
-     return(value)
-}
+Tag.reply = sapply(tagvalue, function(x) Replysplit(x, "reply", "reply", "In-Reply-To"))
+Tag.ask =  sapply(tagvalue, function(x) Replysplit(x, "ask", "reply", "In-Reply-To"))
+Reply.v.reply =  rhelpextract(Tag.reply, "From")
+Reply.v.ask =  rhelpextract(Tag.ask, "From")
+###################################################################
+
+
+################################################### 
