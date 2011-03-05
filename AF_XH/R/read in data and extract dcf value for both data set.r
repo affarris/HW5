@@ -15,6 +15,7 @@ datareadin = function (filename){
 
 
 
+# B Part: 
 # the header start with the common title, such as Date:, From: and end up with white space
 # split the header and body of the dataset based on the characterist of header
 subsetfun = function (txt, pattern){
@@ -52,23 +53,37 @@ extvalfun = function(txt){
 #########extract value of from, to, and so on#############
 tagvalue =sapply(headerrhelp, function(x) sapply(x, function(y) extvalfun(y)))
 rhelpextract = function(list, tag){
-         value = sapply(list, function(x) as.matrix(unlist(sapply(x, function(y) y = y[,tag]))))
+         value = sapply(list, function(x) as.matix(unlist(sapply(x, function(y) y = y[,tag]))))
          return(value)
 }
  
 
 ######tesr 
 
-Fromvalue2 = rhelpextract(tagvalue, c("From"))
-Datevalue = rhelpextract(tagvalue, "Date")
-Subjectvalue = rhelpextract(tagvalue, "Subject")
-Replyvalue =  rhelpextract(tagvalue, "In-Reply-To")
-####Fomat convertion########
+From.v = rhelpextract(tagvalue, "From")
+Date.v = rhelpextract(tagvalue, "Date")
+Subject.v = rhelpextract(tagvalue, "Subject")
 
 
 
- 
-
+#################################################
+### split the tag list "tagvalue" into two part base on  "In-Reply-To"
+   Replysplit = function (list, x, y, z){
+         RowInd = which(unlist(sapply(list, function(x) sum(colnames(x) == z))) == 1)
+         if (x == y){  
+            aa = sapply(RowInd, function(x) x = list[[x]])
+        } else {
+            RowInd = c(1: length(list))[-RowInd]
+            aa = sapply(RowInd, function(x) x = list[[x]])
+            }
+        return (aa)
+   }
+Group.reply = sapply(tagvalue, function(x) Replysplit(x, "reply", "reply", "In-Reply-To"))
+Group.ask =  sapply(tagvalue, function(x) Replysplit(x, "ask", "reply", "In-Reply-To"))
+tag.reply = sapply(Group.reply, function(x) sapply(x, function(y) extvalfun(y)))
+tag.ask = sapply(Group.ask, function(x) sapply(x, function(y) extvalfun(y)))
+Reply.v.reply =  rhelpextract(tag.reply, "From")
+Reply.v.ask =  rhelpextract(tag.ask, "From")
 ################################################################### 
 rhelpextract = function(list, tag = c("From", "IN-Reply-To")){
       
