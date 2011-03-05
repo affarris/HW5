@@ -15,6 +15,6 @@ subHeaders <- function(emailHeader, fields, is.dcf) {
             names(tt)=fields
             return( as.list( tt ) )
     }
-    }, fields = fields)
+    }
 
 
