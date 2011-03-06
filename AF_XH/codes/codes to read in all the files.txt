@@ -1,7 +1,7 @@
 ## create a whole list of the list of each file 
 
 
-heads = c("From ", "From:","Date:")
+heads = c("Date:","From:","From ", "To:", "Message-ID:", "Subject:")
 
 
 filenames=list.files()
@@ -15,11 +15,13 @@ for (i in 1: numFile)
       close(con)
     
 
-      headers=discr(txt, heads,0.75)
-      bodies=bodySplt(txt, headers)
-      emails=emailSplt(txt, headers, bodies)
+      headers = discr(txt, heads,0.75)
+      bodies = bodySplt(txt, headers)
+      emails = emailSplt(txt, headers, bodies)
       
-      wholelist[[i]]=emails    
+      year = gsub("(^[0-9]{4})(.*)", "\\1", filenames)
+      monthe = gsub("(.*)([A-Z][a-z]+)(.*)", "\\2", filenames)
+      wholelist[[i]]=list(year = year, month = month emails = emails)
                                     
   } 
 
