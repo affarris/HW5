@@ -4,7 +4,7 @@
 # post-pre-processing:
 # deals with some lines giving read.dcf() trouble
 
-isnt.well.formed <- function(l){grep( "^[^ ]*[^:] " , l ) }
+isnt.well.formed <- function(l){grep( "^[^:]+$" , l ) }
 
 
 frontPend <- function(vec, ind, add = "\t"){

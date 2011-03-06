@@ -42,26 +42,66 @@ for (i in 1: numFile)
 
 #### obtain years, month and number of emails for each file #####
 
-years=c()
-yr=numeric(numFile)
-mon=character(numFile)
-numEmail=numeric(numFile)
-for (i in 1:numFile){
+  years=c()
+  yr=numeric(numFile)
+  mon=character(numFile)
+  numEmail=numeric(numFile)
+  for (i in 1:numFile){
            yr[i]=wholelist[[i]][[1]] 
            mon[i]=wholelist[[i]][[2]]
            numEmail[i]=length(wholelist[[i]][[3]])
            if (!yr[i] %in% years) (years=c(years,yr[i]))
-}
+                     }
 
-numYear=length(years)
+  numYear=length(years)
 
-numEmYr=aggregate(numEmail, by=list(yr), sum)
-
-
-######
+  numEmYr=aggregate(numEmail, by=list(yr), sum)
 
 
-   
+##############################################
+#### extract value from the dcf format########
+##############################################
+ extvalfun = function(txt, tag){
+          con = textConnection(txt)
+          valuematrix = read.dcf(con)
+          close(con)
+          value = valuematrix[, tag]
+          return(value)
+                          }
+
+extvalfun = function(txt){
+          con = textConnection(txt)
+          valuematrix = read.dcf(con)
+          close(con)
+          return(valuematrix)
+                          }
+
+
+
+
+#########extract value of from, to, and so on#############
+ tagvalue =for(i in 1: length(header.R)){
+                 header.R[[i]]
+
+                    }
+
+ rhelpextract = function(list, tag){
+         value = sapply(list, function(x) unlist(sapply(x, function(y) y = y[,tag])))
+         return(value)
+                                   }
+ 
+
+ From.v = rhelpextract(tagvalue, "From")
+ rhelpextract = function(list, tag){
+         value = sapply(list, function(x) as.matrix(unlist(sapply(x, function(y) y = y[,tag]))))
+         return(value)
+                                   }
+ 
+
+From.v = rhelpextract(tagvalue, "From")
+Date.v = rhelpextract(tagvalue, "Date")
+Subject.v = rhelpextract(tagvalue, "Subject")
+Reply.v = rhelpextract(tagvalue, "In-Reply-To")  
 
 ##### 
 extpat=function(hdlist, reexp, el="\\1"){
@@ -77,11 +117,8 @@ extpat=function(hdlist, reexp, el="\\1"){
 
 
 
-
 ##### Extract Names of People Involved #####
  
- From.v =sapply(Fromvalue, function(x) as.matrix(Fromvalue) 
-
  reexp=".*\\((.*)\\)$"
  names=extpat(From.v, reexp)
 
