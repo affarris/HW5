@@ -1,0 +1,100 @@
+%% user-defined functions from previous editors
+%% many of these are redundant
+
+\def\stackunder#1#2{\mathrel{\mathop{#2}\limits_{#1}}}
+\def\Sum#1#2#3{\stackunder{#1=#2}{\stackrel{#3}{\sum}}}
+\def\Prod#1#2#3{\stackunder{#1=#2}{\stackrel{#3}{\prod}}}
+\def\Cup#1#2#3{\stackunder{#1=#2}{\stackrel{#3}{\cup}}}
+\def\Cap#1#2#3{\stackunder{#1=#2}{\stackrel{#3}{\cap}}}
+\def\limsupn{\stackunder{n}{\lim\sup}}
+\def\limnsup{\lim_{n}\sup}
+\def\limsupnti{\stackunder{n\rightarrow\infty}{\lim\sup}}
+\def\liminfn{\stackunder{n}{\lim\inf}}
+\def\limninf{\lim_{n}\inf}
+\def\limmsup{\lim_{m}\sup}
+\def\limminf{\lim_{m}\inf}
+\def\limntf{\stackunder{\ntf}{\lim}}
+\def\liminfnti{\stackunder{n\rightarrow\infty}{\lim\inf}}
+\def\limnti{\stackunder{n\rightarrow\infty}{\lim}}
+\def\limhti{\stackunder{h\rightarrow\infty}{\lim}}
+\def\limxti{\stackunder{x\rightarrow\infty}{\lim}}
+\def\limonti{\stackunder{n\rightarrow\infty}{\overline{\lim}}}
+\def\limunti{\stackunder{n\rightarrow\infty}{\underline{\lim}}}
+\def\nti{n\rightarrow\infty}
+\def\ntf{\nti}
+\def\ctoinf#1{\stackrel{#1}{\stackunder{c\rightarrow\infty}{\longrightarrow}}}
+\def\ktoinf#1{\stackrel{#1}{\stackunder{k\rightarrow\infty}{\longrightarrow}}}
+\def\ntoinf#1{\stackrel{#1}{\stackunder{n\rightarrow\infty}{\longrightarrow}}}
+\def\nntoinf#1{\stackrel{#1}{\stackunder{n\rightarrow\infty}{\nrightarrow}}}
+\def\Ntoinf#1{\stackrel{#1}{\stackunder{n\rightarrow\infty}{\Rightarrow}}}
+\def\notntoinf#1{\stackrel{#1}{\stackunder{n\rightarrow\infty}{\nrightarrow}}}
+\def\mtoinf#1{\stackrel{#1}{\stackunder{m\rightarrow\infty}{\longrightarrow}}}
+\def\rtoinf#1{\stackrel{#1}{\stackunder{r\rightarrow\infty}{\longrightarrow}}}
+\def\stoinf#1{\stackrel{#1}{\stackunder{s\rightarrow\infty}{\longrightarrow}}}
+\def\ttoinf#1{\stackrel{#1}{\stackunder{t\rightarrow\infty}{\longrightarrow}}}
+\def\xtoinf#1{\stackrel{#1}{\stackunder{x\rightarrow\infty}{\longrightarrow}}}
+\def\nrinf{\stackunder{n\rightarrow\infty}{\longrightarrow}}
+
+\def\half{\frac{1}{2}}
+\def\fracone{\frac{1}{2^{n}\mu_{n}(\Omega)}}
+\def\fraca{\frac{\mu_n(A)}{2^{n}\mu_{n}(\Omega)}}
+\def\fracai{\frac{\mu_n(A_{i})}{2^{n}\mu_{n}(\Omega)}}
+\def\A{\mathcal{A}}
+\def\B{\mathcal{B}}
+\def\E{\mathcal{E}}
+\def\G{\mathcal{G}}
+\def\S{\mathcal{S}}
+\def\T{\mathcal{T}}
+\def\IAi{I_{A_{i}}}
+\def\ISAi{I_{\Sum{i}{1}{n}A_{i}}}
+\def\intAi{\int_{A_{i}}}
+\def\intSAi{\int_{\sum_{i}A_{i}}}
+\def\Var{\text{Var}}
+\def\Cov{\text{Cov}}
+\def\Int#1#2{\stackunder{#1}{\stackrel{#2}{\int}}}%
+\def\Intzi{\Int{0}{\infty}}
+\def\Intiz{\Int{-\infty}{0}}
+\def\Intii{\Int{-\infty}{\infty}}
+
+%% Define symbols for 12(iv) in chapter 2
+\def\w1{\omega_{1}}%
+\def\w2{\omega_{2}}%
+\def\w3{\omega_{3}}%
+\def\w4{\omega_{4}}%
+\def\wij#1#2{\{\omega_{#1},\omega_{#2}\}}%
+\def\wijk#1#2#3{\{\omega_{#1},\omega_{#2},\omega_{#3}\}}%
+\def\wijkl{\{\omega_{1},\omega_{2},\omega_{3},\omega_{4}\}}%
+%% Define symbols for #15 and 16 chapter 2
+\def\atm{A\triangle M}
+\def\aum{A\cup M}
+\def\aiumi{A_{i}\cup M_{i}}
+\def\ajumj{A_{j}\cup M_{j}}
+\def\Cupi{\Cup{i}{1}{\infty}}
+%% def for Chapter 8 #2
+\def\XnXgee{|X_{n}-X|\geq\varepsilon}
+\def\XnXlte{|X_{n}-X|<\varepsilon}
+\def\Xnlex{X_{n}\leq x}
+%% For 4(i) in chapter 10
+\def\limm{\stackunder{m}{\lim}}
+\def\limn{\stackunder{n}{\lim}}
+\def\barAc{(\bar{A})^{^c}}
+%% For 13 in chapter 10
+\def\eit#1{e^{it#1}}
+\def\eitx#1{\eit{X_{#1}}}
+%% definitions for #7 and #8 in chapter 12
+\def\mCr{{m \choose r}}
+\def\mCl{{m \choose l}}
+\def\kCl{{k \choose l}}%
+\def\mpCk{{m+1 \choose k}}
+\def\mpCr{{m+1 \choose r}}
+\def\mCrp{{m \choose r+1}}
+\def\mCrm{{m \choose r-1}}
+\def\mpCrp{{m+1 \choose r+1}}
+%% definitions for #13 in chapter 11
+\def\Sumkn{\Sum{j}{1}{k_n}}
+\def\Intx{\int_{(|x|\geq\varepsilon s_n)}}
+%For 2 in chapter 14
+\def\Sumjoi{\Sum{j}{1}{\infty}}
+%For 4 in chapter 14
+\def\Sumnoi{\Sum{n}{1}{\infty}}
+
