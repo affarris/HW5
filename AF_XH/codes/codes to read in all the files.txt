@@ -36,7 +36,7 @@ for (i in 1: numFile)
   body.R= Split(wholelist, 2)   # obtain a list of all the bodies
 
 
-#####
+##### Question 1 #####
 
 #### obtain years, month and number of emails for each file #####
 
@@ -54,25 +54,20 @@ for (i in 1: numFile)
   numYear=length(years)
 
   numEmYr=aggregate(numEmail, by=list(yr), sum)
+  sum(numEmYr[,2])
+  
+
+
+## plot the amount of emails over years (1998-2010)####
+  email.t=numEmYr[,2]
+  names(email.t)<-years
+  barplot(email.t[2:14],xlab="Years", ylab="Email Amount", main="Number of Messages over Years")
 
 
 ##############################################
 #### extract value from the dcf format########
 ##############################################
- extvalfun = function(txt, tag){
-          con = textConnection(txt)
-          valuematrix = read.dcf(con)
-          close(con)
-          value = valuematrix[, tag]
-          return(value)
-                          }
-
-extvalfun = function(txt){
-          con = textConnection(txt)
-          valuematrix = read.dcf(con)
-          close(con)
-          return(valuematrix)
-                          }
+ 
 
 
 
@@ -83,13 +78,10 @@ extvalfun = function(txt){
 
                     }
 
- rhelpextract = function(list, tag){
-         value = sapply(list, function(x) unlist(sapply(x, function(y) y = y[,tag])))
-         return(value)
-                                   }
+ 
  
 
- From.v = rhelpextract(tagvalue, "From")
+
  rhelpextract = function(list, tag){
          value = sapply(list, function(x) as.matrix(unlist(sapply(x, function(y) y = y[,tag]))))
          return(value)
@@ -121,6 +113,7 @@ extpat=function(hdlist, reexp, el="\\1"){
  names=extpat(From.v, reexp)
 
 ## the following code tries to obtain number of people involved for each year (pepYr)
+ dim(table(unlist(names))) ## return the total number of people involved in the mailing list so far
 
  nameYr=rep(list(list()),numYear)
  nn=table(yr)
@@ -141,7 +134,7 @@ extpat=function(hdlist, reexp, el="\\1"){
  
  Dates.v=greHD("Date")
  reexp1= "(.*),.*"
- dates=extpat(datesLT, reexp1)
+ dates=extpat(Dates.v, reexp1)
 
  a=unlist(dates)
  table(a)
@@ -153,11 +146,33 @@ extpat=function(hdlist, reexp, el="\\1"){
 #### Time Zones Effect ######
 
  reexp2="(.*)([-+][0-9]{4})(.*)"
- tz=extpat(datesLT, reexp2, "\\2")
+ tz=extpat(Date.v, reexp2, "\\2")
  tzt=table(unlist(tz))
  dim(tzt)
+ tzt[order(tzt)]
+##### removing stop words in Subjects #####
+ 
+ 
+ stops <- readLines("http://eeyore.ucdavis.edu/stat242/Data/StopWords")
+ stopExpr <- paste( " " , stops , " ", collapse = "|", sep = "" )
+ Subject.rm<-extpat(Subject.v, stopExpr, " ")
 
 
+######
+ 
+ funnames=list.files("r.fun")
+ fun.names=gsub("\\.[A-Z]", "", funnames)
 
-######### Subjects ######
- subjects=greHD("Subject")
+
+ 
+
+
+#####
+
+  bodyrep = list()
+      for (i in 1 : length(tagvalue)){
+         RowInd = which(unlist(sapply(tagvalue[[i]], function(x)  sum(colnames(x)  == "In-Reply-To"))) == 1)
+         bodyrep[[i]] = body.R[[i]][RowInd]
+         }
+ 
+

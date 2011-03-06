@@ -8,13 +8,13 @@ subHeaders <- function(emailHeader, fields, is.dcf) {
     }
     else{    
            fields1 <- sapply(fields, function(w){ paste("(","^",w,":",")", sep = "") })  
-           fields2 <- paste(fields, collapse = "|")
+           fields2 <- paste(fields1, collapse = "|")
 
             rInd = grep(fields2,  emailHeader)
                tt= gsub(".*\\:[= ](.*)$","\\1", emailHeader[rInd])
             names(tt)=fields
             return( as.list( tt ) )
     }
-    }, fields = fields)
+    }
 
 
