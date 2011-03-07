@@ -19,7 +19,7 @@ LazyLoad: \tab yes\cr
 }
 }
 \author{
-Andrew Farris, Xinyi Hu
+Andrew Farris, Xinyi Hu, Yi Chen
 }
 \examples{
 test1()
